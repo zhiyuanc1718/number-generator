@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Number Generator + Guesser</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script>
+   
+    var k = 100, a = 0, x = a, y = k, mood;
+    while (k==100 || k == 0){
+        k = Math.ceil(Math.random() * 100);
+    }
+    
+    $(function() {
+      $("button.fad").click(function(){
+        if($("input").val().length >= 1){
+          mood = $('select').val();
+          $(".fad").fadeOut(2000, function(){
+            $('#a').html('0');
+            $('#b').html('100');
+            $('#c').html('TO');
+            $('#a,#b').css({'visibility':'visible', 'display':'inline-block'});
+            $('.in').css({'display':'block'});
+          });
+        }
+      });
+      
+      $("input.in").click(function(){
+         $('#warning').html(""); 
+      });
+      
+      $("#en").click(function(){
+        var value = Math.floor($('input.in').val())
+        $('input.in').val("")
+        if(value > x && value < y){
+          a++;
+          if (k>value){
+            x = value;  //set as new lower bound
+            $('#a').html(x);
+          }else if (k<value){
+            y = value;  //set as new upper bound
+            $('#b').html(y);
+          }else{
+            $(".dis, .in").css({'display':'none'})
+            var str = "Congratulations, you guessed the number. ";
+            
+            switch(mood){
+              case "happy":
+                str = str + "Your unlucky numbers are ";
+                break;
+              case "neutral":
+                str = str + "Your unlucky number is ";
+                break;
+              default:
+                str = str + "Your lucky numbers are ";
+            }
+            
+            switch(mood){
+              case "neutral":
+                str = str + k + " and lucky number is " + a;
+                break;
+              default:
+                str = str + k + " and " + a;
+            }
+            
+            str = str + ". Thanks for playing !!";
+            $("#result").html(str).css({"display":"visible","text-align":"center", "font-size": "3em"});
+          }
+        }else{
+          $('#warning').html("Please Input Number Between The Given Range!!!").css({'color':'red','text-align':'center','font-size':'150%'})
+        }
+      });
+    });
+  </script>
+  
+  <style>
+  
+      body{
+          background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,255,1));
+      }
+      
+      h1{
+          text-align: center;
+          font-size: 3em;
+      }
+      
+      input,select{
+          background-color: lightblue;
+          border-color: gray;
+          position: relative;
+          width: 40%;
+          display: block;
+          left: 30%;
+          margin-top: 3%;
+          padding: 1%;
+          text-align: center;
+          border-radius: 10px;
+          font-size: larger;
+          transition: 2s;
+      }
+      
+      input::placeholder{
+        color: Black;
+        font-size: 1.5em;
+      }
+      
+      #name:focus {
+        box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+        background-color: yellow;
+        color: black;
+      }
+      
+      input:focus::placeholder{
+        color: transparent;
+      }
+      
+      select{
+          width: 30%;
+          left: 35%;
+          font-size: 1.5em;
+      }
+    
+      button{
+          position: relative;
+          margin-top: 3%;
+          left:35%;
+          width: 30%;
+          color: blue;
+          font-size: 1.5em;
+          padding: 1%;
+      }
+      
+      #q{
+        text-align: center;
+        color: darkblue;
+        font-size: 200%;
+      }
+      
+      #a,#b{
+        position: relative;
+        display: none;
+        text-align: center;
+        visibility: hidden;
+        background-color: skyblue;
+        width: 20%;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        font-size: 3em;
+        margin-left: 20%;
+      }
+      
+      #c{
+        position: fixed;
+        display: inline-block;
+        margin: 0 auto;
+        left: 45%;
+        top: 30%;
+        width: 10%;
+        font-size:3em;
+        text-align: center;
+      }
+      
+      .in{
+        display: none;
+      }
+      
+  </style>
+</head>
+
+<body>
+    <h1>Number Guesser</h1>
+    
+    <input id="name" class="fad" placeholder= "Name" required>
+    <p id="q" class="fad">How are you feeling?</p>
+    <p id="a" class="dis"></p>
+    <p id="b" class="dis"></p>
+    <p id="c" class="dis"></p>
+    
+    <select id="mood" class="fad">
+      <option value="happy">happy</option>
+      <option value="sad">sad</option>
+      <option value="neutral">neutral</option>
+    </select>
+    
+    <button class="fad">Click To Begin</button>
+    <input class="in" placeholder="Enter a number">
+    <button class="in" id="en">Submit Value</button>
+    <p id="warning" class="in"></p>
+    <p id="result"></p>
+</body>
+
+</html>
